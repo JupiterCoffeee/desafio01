@@ -6,12 +6,13 @@ interface taskProps {
     onCompleteTask: (task: string) => void
 }
 
-export function Task({ content, onDeleteTask }: taskProps ) {
+export function Task({ content, onDeleteTask, onCompleteTask }: taskProps ) {
 
     const [isTaskComplete, setTaskComplete] = useState(false);
 
     function handleTaskComplete() {
-        setTaskComplete(!isTaskComplete);
+        onCompleteTask(content);
+        setTaskComplete(!isTaskComplete)
     }
 
     function handleDeleteTask() {

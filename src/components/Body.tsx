@@ -26,24 +26,35 @@ export function Body() {
 
     function completeTask(taskToComplete: string) {
         const tasksWithoutCompleteOne = tasks.filter(task => {
-            return (
-                task != taskToComplete
-            )
+            return task != taskToComplete
         })
-        setTasks(tasksWithoutCompleteOne)
-        setCompleteTasks([...completeTasks, taskToComplete])
+        const areTasksEqual = completeTasks.filter(task => {
+            return task == taskToComplete
+        })
+        if (areTasksEqual.length >= 1) {
+            return
+        } else {
+            setTasks(tasksWithoutCompleteOne)
+            setCompleteTasks([...completeTasks, taskToComplete])
+        }
     }
 
     function deleteTask(taskToDelete: string) {
         const tasksWithoutDeletedOne = tasks.filter(task => {
             return task != taskToDelete;
         })
+        const completeTasksWithoutDeletedOne = completeTasks.filter(task => {
+            return task != taskToDelete;
+        })
         setTasks(tasksWithoutDeletedOne);
+        setCompleteTasks(completeTasksWithoutDeletedOne);
     }
 
     const isNewTaskEmpty = newTaskText.length == 0;
     const taskCount = tasks.length;
+    const completeTaskCount = completeTasks.length;
     const isTaskListEmpty = tasks.length == 0
+    const isCompleteTaskListEmpty = completeTasks.length == 0
 
     return (
         <>
@@ -71,11 +82,13 @@ export function Body() {
                     </div>
                     <div className="flex items-center gap-2">
                         <span className="text-purple text-sm">Concluídas</span>
-                        <span className="bg-gray-400 text-gray-100 text-sm flex items-center px-3 py-[0.125rem] rounded-full">0</span>
+                        <span className="bg-gray-400 text-gray-100 text-sm flex items-center px-3 py-[0.125rem] rounded-full">
+                            {isTaskListEmpty && isCompleteTaskListEmpty ? "0" : `${completeTaskCount} de ${taskCount + completeTaskCount}`}
+                        </span>
                     </div>
                 </div>
                 {
-                    isTaskListEmpty ?
+                    isTaskListEmpty && isCompleteTaskListEmpty ?
                     <div className="flex flex-col gap-2 items-center border-t-[1px] border-gray-400 text-gray-300 py-[4rem]">
                         <ClipboardText weight="thin" className="w-[3.5rem] h-[3.5rem]"/>
                         <div>
@@ -85,7 +98,20 @@ export function Body() {
                     </div>
                     :
                     <div className="flex flex-col gap-4">
-                        {tasks.map(item => {
+                        <div className="flex flex-col gap-4 bg-blue">
+                            {tasks.map(item => {
+                                    return (
+                                        <Task 
+                                        key={item} 
+                                        content={item}
+                                        onDeleteTask={deleteTask}
+                                        onCompleteTask={completeTask}
+                                    />
+                                    )
+                            })}
+                        </div>
+                        <div className="flex flex-col gap-4 bg-purple">
+                        {completeTasks.map(item => {
                                 return (
                                     <Task 
                                     key={item} 
@@ -96,6 +122,7 @@ export function Body() {
                                 )
                         })}
                     </div>
+                </div>
                 }
             </section>
         </>
