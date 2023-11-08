@@ -98,24 +98,26 @@ export function Body() {
                     </div>
                     :
                     <div className="flex flex-col gap-4">
-                        <div className="flex flex-col gap-4 bg-blue">
+                        <div className="flex flex-col gap-4">
                             {tasks.map(item => {
                                     return (
                                         <Task 
                                         key={item} 
                                         content={item}
+                                        isTaskComplete={false}
                                         onDeleteTask={deleteTask}
                                         onCompleteTask={completeTask}
                                     />
                                     )
                             })}
                         </div>
-                        <div className="flex flex-col gap-4 bg-purple">
+                        <div className="flex flex-col gap-4">
                         {completeTasks.map(item => {
                                 return (
                                     <Task 
                                     key={item} 
                                     content={item}
+                                    isTaskComplete={true}
                                     onDeleteTask={deleteTask}
                                     onCompleteTask={completeTask}
                                 />

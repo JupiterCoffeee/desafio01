@@ -2,17 +2,19 @@ import { CheckCircle, Circle, Trash } from "phosphor-react";
 import { useState } from "react";
 interface taskProps {
     content: string
+    isTaskComplete: boolean
     onDeleteTask: (task: string) => void
     onCompleteTask: (task: string) => void
 }
 
-export function Task({ content, onDeleteTask, onCompleteTask }: taskProps ) {
+export function Task({ content, onDeleteTask, onCompleteTask, isTaskComplete }: taskProps ) {
 
-    const [isTaskComplete, setTaskComplete] = useState(false);
+    const [taskComplete, setTaskComplete] = useState(isTaskComplete);
 
     function handleTaskComplete() {
         onCompleteTask(content);
-        setTaskComplete(!isTaskComplete)
+        setTaskComplete(taskComplete)
+        console.log(taskComplete)
     }
 
     function handleDeleteTask() {
